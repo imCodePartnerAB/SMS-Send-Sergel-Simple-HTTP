@@ -1,5 +1,7 @@
 package SMS::Send::Sergel::Simple::HTTP;
 
+# ABSTRACT: SMS::Send driver for Sergel simple http service
+
 use HTTP::Tiny;
 use URI::Escape;
 use base 'SMS::Send::Driver';
