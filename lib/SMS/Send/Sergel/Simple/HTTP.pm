@@ -58,52 +58,6 @@ sub send_sms {
   }
 }
 
-=pod
-
-sub _check_responsecode {
-  my $self = @_;
-
-  my $result_codes = {
-    3    => 'Maximum throttling exceeded',
-    100  => 'Service not found',
-    101  => 'User not found',
-    102  => 'Account not found',
-    103  => 'Invalid password',
-    1000 => 'Sent',
-    1001 =>       Delivered
-    1002 => Expired
-    1003 =>       Deleted
-    1004 =>       Mobile full
-    1005 => Queued
-    1006 => Not delivered
-    2000 => Invalid source number
-    2001 => Short number is not supported as source
-    2002 Alpha is not supported as source
-    2003 MSISDN is not supported as source number
-    2100 Short number is not supported as destination
-    2101 Alpha is not supported as destination
-    2102 MSISDN is not supported as destination
-    2103 Operation blocked
-    2104 Unknown subscriber
-    2105 Destination blocked
-    2106 Number error
-    2200       Charging error
-    2201 Subscriber has low balance
-    3000 GSM encoding is not supported
-    3001 UCS2 encoding is not supported
-    4000 Delivery report is not supported
-    4001 Invalid message content
-    4002 Invalid tariff
-    4003       Invalid user data
-    4004 Invalid user data header
-    4005       Invalid data coding
-    4006 Invalid VAT
-    4007 Unsupported content for destination
-  };
-}
-
-=cut
-
 1;
 
 __END__
@@ -121,9 +75,11 @@ SMS::Send::Sergel::Simple::HTTP
 
   # Create sender
   my $sender = SMS::Send->new('Sergel::Simple::HTTP',
-    _login => 'username',
-    _password => 'password',
-    _sender => 'SENDER' # Text or phone number
+    _url       => 'API url'
+    _serviceid => 'serviceid',
+    _login     => 'username',
+    _password  => 'password',
+    _sender    => 'SENDER' # Text or phone number
   );
 
   # Send message, returns true if OK
