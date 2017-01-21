@@ -1,3 +1,4 @@
+---# Get this info from your provider
 url: "https://ws1.sp247.net/smscsimplehttp"
-serviceid: "698"
-source: "debug.pl"
+serviceid: "ServiceId"
+source: "FROM"
