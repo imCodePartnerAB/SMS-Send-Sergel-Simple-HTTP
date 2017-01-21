@@ -13,11 +13,17 @@ sub new {
   unless (
     $args{'_login'}
     && $args{'_password'}
-    && $args{'_sender'}
+    && $args{'_source'}
     && $args{'_serviceid'}
   ) {
-    die "$class needs hash with _serviceid, _login, _password and _sender.\n"
-  }
+    die << "eof";
+$class needs hash with non empty values:
+_serviceid: $args{_serviceid}
+_login: $args{_login}
+_password: $args{_password}
+_source: $args{_source}
+eof
+}
 
   my $self = bless {%args}, $class;
   $self->{base_url} = $args{_url} // 'https://ws1.sp247.net/smscsimplehttp';
@@ -31,7 +37,7 @@ sub send_sms {
               . '&Username='    . $self->{_login}
               . '&Password='    . $self->{_password}
               . '&Destination=' . uri_escape($args{'to'})
-              . '&Source='      . uri_escape($self->{_sender})
+              . '&Source='      . uri_escape($self->{_source})
               . '&Userdata='    . uri_escape($args{'text'});
 
   my $response = HTTP::Tiny->new->get($query);

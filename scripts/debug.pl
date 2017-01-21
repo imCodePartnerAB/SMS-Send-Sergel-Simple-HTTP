@@ -11,7 +11,7 @@ use warnings;
 
 sub usage {
   print << "eof";
-Prepare the conf.yaml file with credentials etc.
+Prepare the conf.yaml and debug.yaml files with credentials etc.
 Then run perl debug.pl.
 eof
 }
@@ -21,6 +21,10 @@ unless (-f 'conf.yaml') {
   die "No conf.yaml found";
 }
 
+unless (-f 'debug.yaml') {
+  usage();
+  die "No debug.yaml found";
+}
 
 my $conf1 = YAML::LoadFile('conf.yaml');
 my $conf2 = YAML::LoadFile('debug.yaml');
@@ -41,9 +45,7 @@ eof
 
 my $sender = SMS::Send->new('Sergel::Simple::HTTP',
   _debug => 1,
-  _login => $conf->{_login},
-  _password => $conf->{_password},
-  _sender => $conf->{_source},
+  %$conf,
 );
 
 my $response = $sender->send_sms(
