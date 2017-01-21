@@ -1,0 +1,7 @@
+/SMS-Send-Sergel-Simple-HTTP-*
+/.build
+/_build*
+/Build
+MYMETA.*
+!META.json
+/.prove
