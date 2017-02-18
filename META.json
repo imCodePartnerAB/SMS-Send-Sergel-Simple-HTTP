@@ -10,7 +10,7 @@
    ],
    "meta-spec" : {
       "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
-      "version" : "2"
+      "version" : 2
    },
    "name" : "SMS-Send-Sergel-Simple-HTTP",
    "no_index" : {
@@ -37,6 +37,8 @@
       },
       "runtime" : {
          "requires" : {
+            "SMS::Send::Driver" : "0.06",
+            "URI::Escape" : "3.31",
             "perl" : "5.010"
          }
       },
@@ -58,10 +60,10 @@
          "web" : "https://github.com/eskaaren/SMS-Send-Sergel-Simple-HTTP"
       }
    },
-   "version" : "0.01",
+   "version" : "0.02",
    "x_contributors" : [
       "Eivin Giske Skaaren <eskaaren@yahoo.no>"
    ],
-   "x_serialization_backend" : "JSON::XS version 3.02"
+   "x_serialization_backend" : "Cpanel::JSON::XS version 3.0227"
 }
 
