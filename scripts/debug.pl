@@ -4,7 +4,7 @@ use YAML;
 use HTTP::Tiny;
 use SMS::Send;
 use lib '../lib';
-use SMS::SEND::Sergel::Simple::HTTP;
+use SMS::Send::Sergel::Simple::HTTP;
 use Data::Dumper;
 use strict;
 use warnings;
