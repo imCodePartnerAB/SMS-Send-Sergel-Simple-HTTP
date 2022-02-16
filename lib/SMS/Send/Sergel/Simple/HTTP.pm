@@ -33,12 +33,20 @@ eof
 }
 
 sub send_sms {
+    
+
+   my $to;
+   evl { $to = normalize_phone_number( $args{to} ); };
+   if ($@) {
+       return 0;
+   }
+
   my ($self, %args) = @_;
   my $query = $self->{base_url}
               . '?ServiceId='   . $self->{_serviceid}
               . '&Username='    . $self->{_login}
               . '&Password='    . $self->{_password}
-              . '&Destination=' . uri_escape($args{'to'})
+              . '&Destination=' . uri_escape($to)
               . '&Source='      . uri_escape($self->{_source})
               . '&Userdata='    . uri_escape($args{'text'});
 
@@ -64,6 +72,24 @@ sub send_sms {
   } else {
    return 0;
   }
+}
+
+sub normalize_phone_number {
+    my $nr = shift;
+
+    $_ = $nr;
+    s/(^[^+0-9])|((?<=.)[^0-9])//g;
+    s/^((\+\+)|(\+?00))/+/;
+    s/^0/+46/;
+
+    croak "Invalid phone number '$nr' ('$_')" unless /^\+\d*$/;
+
+    return $_;
+}
+
+sub is_swedish_mobile_phone {
+    my $nr = shift;
+    return $nr =~ /^\+467(([02369])|(4[123457])|(10))/;
 }
 
 1;
