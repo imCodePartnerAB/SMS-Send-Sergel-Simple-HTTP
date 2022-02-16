@@ -7,7 +7,12 @@ use URI::Escape;
 use base 'SMS::Send::Driver';
 use strict;
 use warnings;
+use Encode qw(encode decode);
+use Carp;
+use Data::Dumper;
+use Log::Log4perl qw(:easy);
 our $VERSION = '0.02';
+Log::Log4perl->easy_init($DEBUG);
 
 sub new {
   my ($class, %args) = @_;
@@ -33,29 +38,29 @@ eof
 }
 
 sub send_sms {
-    
 
-   my $to;
-   evl { $to = normalize_phone_number( $args{to} ); };
-   if ($@) {
-       return 0;
-   }
-
-  my ($self, %args) = @_;
+    my ($self, %args) = @_;
+    my $tov='';
+    DEBUG "message to: $args{to} in Sergel:Simple:HTTP";
+    eval { $tov = normalize_phone_number( $args{to} ); };
+    if ($@) {
+    	return 0;
+    }
+    DEBUG "tov: $tov";
   my $query = $self->{base_url}
               . '?ServiceId='   . $self->{_serviceid}
               . '&Username='    . $self->{_login}
               . '&Password='    . $self->{_password}
-              . '&Destination=' . uri_escape($to)
+              . '&Destination=' . uri_escape($tov)
               . '&Source='      . uri_escape($self->{_source})
               . '&Userdata='    . uri_escape($args{'text'});
 
   my $response = HTTP::Tiny->new->get($query);
 
   if ($self->{_debug}) {
-    return $response;
+      #return $response;
   }
-
+  DEBUG "SMS link sent $query";
   if ($response->{success}) {
     my ($resultCode, $resultDescription, $messageId) = split /;/, $response->{content};
     my $OK_codes = {
@@ -63,7 +68,6 @@ sub send_sms {
       1001 => 'Delivered',
       1005 => 'Queued',
     };
-
     if (exists($OK_codes->{$resultCode})) {
       return 1;
     } else {
@@ -85,11 +89,6 @@ sub normalize_phone_number {
     croak "Invalid phone number '$nr' ('$_')" unless /^\+\d*$/;
 
     return $_;
-}
-
-sub is_swedish_mobile_phone {
-    my $nr = shift;
-    return $nr =~ /^\+467(([02369])|(4[123457])|(10))/;
 }
 
 1;
